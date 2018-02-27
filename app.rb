@@ -13,14 +13,28 @@ end
 
 post('/surveys') do
   title = params['title']
-  @survey = Survey.new({:title => title})
-  @survey.save
+  @survey = Survey.create({:title => title})
   erb(:success)
 end
 
 get('/surveys/:id/edit') do
   @survey = Survey.find(params['id'].to_i)
   erb(:survey_edit)
+end
+
+get('/surveys/:id') do
+  @survey = Survey.find(params['id'].to_i)
+  @questions = Question.all
+  erb(:survey)
+end
+
+post('/surveys/:id') do
+  @survey = Survey.find(params['id'].to_i)
+  question = params['question']
+  survey_id = params['survey_id']
+  @question = Question.create({:question => question, :survey_id => survey_id})
+  @questions = Question.all
+  erb(:survey)
 end
 
 patch('/surveys/:id') do
