@@ -1,0 +1,18 @@
+<h1>Survey Builder</h1>
+
+<p>Here are all of your surveys:</p>
+
+<ul>
+  <% @surveys.each do |survey| %>
+    <li><%= survey.title %></li>
+  <% end %>
+</ul>
+
+<p>Create a new survey:</p>
+
+<form action="/surveys" method="post">
+  <label for="title">Title</label>
+  <input id="title" name="title" type="text">
+
+  <button type="submit">Add survey</button>
+</form>
