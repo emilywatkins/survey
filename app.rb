@@ -11,7 +11,7 @@ end
 post('/surveys') do
   title = params['title']
   @survey = Survey.create({:title => title})
-  erb(:success)
+  redirect("/surveys/".concat(@survey.id.to_s))
 end
 
 get('/surveys/:id/edit') do
@@ -21,7 +21,7 @@ end
 
 get('/surveys/:id') do
   @survey = Survey.find(params['id'].to_i)
-  @questions = Question.all
+  @questions = @survey.question
   erb(:survey)
 end
 
