@@ -3,7 +3,13 @@ Bundler.require(:default)
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
+
 get('/') do
+  @surveys = Survey.all
+  erb(:index)
+end
+
+get('/surveys') do
   @surveys = Survey.all
   erb(:index)
 end
@@ -21,7 +27,7 @@ end
 
 get('/surveys/:id') do
   @survey = Survey.find(params['id'].to_i)
-  @questions = @survey.question
+  @questions = @survey.questions
   erb(:survey)
 end
 
@@ -44,7 +50,10 @@ end
 
 delete('/surveys/:id') do
   @survey = Survey.find(params['id'].to_i)
-  @survey.destroy
   @surveys = Survey.all
-  erb(:index)
+  if @survey.destroy
+    redirect("/surveys")
+  else
+    erb(:survey)
+  end
 end
